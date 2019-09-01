@@ -10,10 +10,12 @@ let period;
 let budgetDay;
 
 function start() {
-    do {
-        money = +prompt('Ваш месячный доход', '500');
+    money = +prompt('Ваш месячный доход', '5000');
+       
+    while (isNaN(money) || money === '' || money === null || money === 0) {
+        money = +prompt('Ваш месячный доход', '5000');
         console.log('money: ', money);
-    } while (isNaN(money) || money === ' ' || money === 0);
+    }
 }
 start();
 
@@ -27,29 +29,27 @@ showTypeOf(addExpenses);
 showTypeOf(deposit);
 
 // 5 задание
-let priceExpenses1,
-    priceExpenses2,
-    nameExpenses1,
+let nameExpenses1,
     nameExpenses2;
 
 // 1 задание
 function getExpensesMonth() {
     let sum = 0;
-
     for( let i = 0; i < 2; i++ ) {
+        
         if (i === 0) {
             nameExpenses1 = prompt('Какие обязательные ежемесячные расходы у вас есть?');
         }
         if (i === 1) {
             nameExpenses2 = prompt('Какие обязательные ежемесячные расходы у вас есть?');
         }
-        
-        do {
-            sum += +prompt('Во сколько это обойдется');
-            console.log('sum: ', sum);
-        } while (isNaN(sum) || sum === ' ' || sum === 0);
 
-    }
+        do {
+            sum += +prompt('Во сколько это обойдется', '500');
+            console.log('sum: ', sum);
+        } while (isNaN(sum) || sum === '' || sum === null || sum === 0);
+       
+    }    
 
     return sum;
 }
@@ -66,38 +66,36 @@ console.log('period: ', period);
 
 // 8 задание
 budgetDay = Math.floor(budgetMonth / 30);
-
-if (budgetDay < 0) {
-    alert('Что-то пошло не так');
-}
-
 console.log('budgetDay: ', budgetDay);
 
 // 9 задание, функции не должны выводить в консоль!!!
 let getStatusIncome = function() {
     if (budgetDay > 800) {
         return ('Высокий уровень дохода');
-    } else if (budgetDay > 300 && budgetDay < 800) {
+    } else if (budgetDay > 300) {
         return ('Средний уровень дохода');
-    } else if (budgetDay > 0 && budgetDay < 300) {
+    } else if (budgetDay > 0) {
         return ('Низкий уровень дохода');
     } else {
-        return ("Это не выполнится");
+        return ('Что-то пошло не так');
     }
 };
 console.log( getStatusIncome() );
 
-
-let accumulatedMonth = function getAccumulatedMonth() {
+function getAccumulatedMonth() {
     return money - expensesMonth;
-};
-console.log('accumulatedMonth: ', accumulatedMonth() );
-
-function getTargetMonth() {
-    return Math.ceil( mission / accumulatedMonth() );
 }
 
-if ( getTargetMonth() < 0 ) {
+let accumulatedMonth = getAccumulatedMonth;
+console.log('accumulatedMonth: ', accumulatedMonth);
+
+function getTargetMonth() {
+    return Math.ceil( mission / accumulatedMonth);
+}
+
+if ( getTargetMonth() > 0 ) {
+    alert('Цель будет достигнута за ' + getTargetMonth() + ' месяцев');
+} else {
     alert('Цель не будет достигнута');
 }
 
