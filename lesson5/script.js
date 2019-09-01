@@ -10,12 +10,10 @@ let period;
 let budgetDay;
 
 function start() {
-    money = +prompt('Ваш месячный доход', '5000');
-       
-    while (isNaN(money) || money === '' || money === null || money === 0) {
+    do {
         money = +prompt('Ваш месячный доход', '5000');
         console.log('money: ', money);
-    }
+    } while (isNaN(money) || money === '' || money === null || money === 0);
 }
 start();
 
@@ -34,7 +32,7 @@ let nameExpenses1,
 
 // 1 задание
 function getExpensesMonth() {
-    let sum = 0;
+    let sum = 0, priceExpenses;
     for( let i = 0; i < 2; i++ ) {
         
         if (i === 0) {
@@ -45,10 +43,11 @@ function getExpensesMonth() {
         }
 
         do {
-            sum += +prompt('Во сколько это обойдется', '500');
+            priceExpenses = +prompt('Во сколько это обойдется', '500');
             console.log('sum: ', sum);
-        } while (isNaN(sum) || sum === '' || sum === null || sum === 0);
+        } while (isNaN(priceExpenses) || priceExpenses === '' || priceExpenses === null || priceExpenses === 0);
        
+        sum += priceExpenses;
     }    
 
     return sum;
