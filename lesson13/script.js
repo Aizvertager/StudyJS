@@ -106,21 +106,27 @@ window.addEventListener('DOMContentLoaded', () => {
     let start = 0,
         pops = document.querySelectorAll('.popup-btn'),
         element = document.querySelector('.popup');
-        element.style.opacity = 0;
+        
 
     function step() {
         start += 0.02;
         element.style.opacity = start;
         if(start < 1.05) {
             requestAnimationFrame(step);
-        }
-      }
+        } 
+    }
 
-      pops.forEach((elem) => {
+    pops.forEach((elem) => {
         elem.addEventListener('click', () => {
-            requestAnimationFrame(step);
+            if (screen.width < 768) {
+                cancelAnimationFrame(step);
+                element.style.display = 'block';
+            } else {
+                requestAnimationFrame(step);
+                start = 0;
+            }
         });
-      });
+    });
       
       
  });
