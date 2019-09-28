@@ -396,45 +396,67 @@ window.addEventListener('DOMContentLoaded', () => {
                 body[key] = val;
             });
 
-            postData(body, 
-                () => {
-                    statusMessage.textContent = successMessage;
-                }, 
-                (error) => {
-                    statusMessage.textContent = errorMessage;
-                    console.log(error);
-                },
-                () => {
-                    form.reset();
-                }
-            );
+            postData(body)
+                .then(outputData)
+                .catch(error => console.error(error))
+                .then(clearForm);
+
+            // postData(body, 
+            //     () => {
+            //         statusMessage.textContent = successMessage;
+            //     }, 
+            //     (error) => {
+            //         statusMessage.textContent = errorMessage;
+            //         console.log(error);
+            //     },
+            //     () => {
+            //         form.reset();
+            //     }
+            // );
         });
+
+        const outputData = () => {
+            statusMessage.textContent = successMessage;
+        };
+
+        const errorData = (error) => {
+            statusMessage.textContent = errorMessage;
+            console.log(error);
+        };
+
+        const clearForm = () => {
+            form.reset();
+        };
         
-        const postData = (body, outputData, errorData, clearForm) => {
-            const request = new XMLHttpRequest();
+        const postData = (body) => {
+            
+            return new Promise((resolve, reject) => {
+                const request = new XMLHttpRequest();
 
-            request.addEventListener('readystatechange', () => {
-                if(request.readyState !== 4) {
-                    return;
-                } 
+                request.addEventListener('readystatechange', () => {
+                    if(request.readyState !== 4) {
+                        return;
+                    } 
 
-                if(request.status === 200) {
-                    outputData();
-                } else {
-                    errorData(request.status);
-                }
+                    if(request.status === 200) {
+                        resolve();
+                    } else {
+                        reject(request.status);
+                    }
+                });
+
+                request.open('POST', './server.php');
+
+                // Отправляем в form-data
+                // request.setRequestHeader('Content-Type', 'multipart/form-data');
+                
+                // Отправляем в JSON
+                request.setRequestHeader('Content-Type', 'application/json');
+                // Отправка body
+                request.send(JSON.stringify(body));
+                clearForm();
             });
 
-            request.open('POST', './server.php');
-
-            // Отправляем в form-data
-            // request.setRequestHeader('Content-Type', 'multipart/form-data');
-            
-            // Отправляем в JSON
-            request.setRequestHeader('Content-Type', 'application/json');
-            // Отправка body
-            request.send(JSON.stringify(body));
-            clearForm();
         };
 
     };
