@@ -17,9 +17,9 @@ const calc = (price = 100) => {
             countValue += (calcCount.value - 1) / 10;
         }
 
-        if (calcDay && calcDay.value < 5) {
+        if (calcDay.value && calcDay.value < 5) {
             dayValue *= 2;
-        } else if (calcDay && calcDay.value < 10) {
+        } else if (calcDay.value && calcDay.value < 10) {
             dayValue *= 1.5;
         } 
 
@@ -27,7 +27,7 @@ const calc = (price = 100) => {
             total = price * typeValue * squareValue * countValue * dayValue;
         } 
 
-        totalValue.textContent = total;
+        totalValue.textContent = Math.ceil(total);
     };
 
     calcBlock.addEventListener('change', (e) => {
